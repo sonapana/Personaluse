@@ -1,0 +1,102 @@
+🎤 Presentation Narrative: Adaptive Data Quality System
+1. The Problem: The Static Wall (Slides 1-2)
+Hook: Start with the pain point specific to your target industry (banking/finance).
+
+Point: Traditional data quality systems are brittle and reactive. They rely on static, hardcoded rules (e.g., "Income must be less than $1,000,000").
+
+The Flaw: These systems cannot detect new, emergent risks (e.g., a massive spike in non-US customer volume, or a sudden, subtle change in the average loan amount) until it's too late. The LLM is blind to data evolution.
+
+Visual Aid:
+
+2. The Adaptive Solution: The AI Data Loop (Slides 3-5)
+This section explains the core innovation—the multi-agent system built with LangGraph and the Model Context Protocol (MCP).
+
+The Adaptive Loop (MCP in Action)
+Point: We designed an Adaptive Data Quality Loop using LangGraph where specialized LLM agents continuously monitor and correct the rules themselves.
+
+Agent Roles (The Narrative):
+
+Agent 1: The Profiling Agent (ML): "I detect the signal." This agent runs non-LLM tools (Isolation Forest, Pandas) to find anomalies (the $999,999.00 income) and drift (the unexpected country code spike).
+
+Agent 2: The Rule Generation Agent (LLM): "I write the fix." It receives the ProfilingReport via the MCP and reasons: "Since income is drifting, I will propose a new, tighter rule: max_value=150000.00." It outputs this executable code.
+
+Agent 3: The Validation Agent (Great Expectations): "I enforce the law." It immediately applies the new rule to the incoming data, flagging the outlier record as a FAILURE.
+
+Agent 4: The Refinement Agent (LLM): "I learn from failure." If the new rule caused too many good records to fail (a false positive), this agent critiques the prompt that Agent 2 used and writes a better one into the MCP for the next run. This closes the self-correcting loop.
+
+The Model Context Protocol (MCP)
+Point: The MCP (GraphState) is the shared blueprint that makes this collaboration reliable. It standardizes communication, ensuring the Rule Generation Agent always receives a perfect statistical report and the Refinement Agent can dynamically update the LLM's prompt for continuous improvement.
+
+3. LangSmith: The Reliability Backbone (Slides 6-7)
+This addresses trust and production readiness, showing the judges you considered deployment.
+
+Point: Since LLMs are non-deterministic, we need complete visibility to trust the adaptive system. LangSmith provides the necessary LLM Observability.
+
+Key Features to Highlight:
+
+Full Agent Tracing: LangSmith maps the entire LangGraph flow for every run. When a data anomaly is quarantined, we can click one link to see the precise path the data took, which LLM call was made, and the exact input/output of every agent.
+
+Debugging/Auditing: If the Rule Generation Agent outputs invalid JSON, LangSmith shows the exact prompt and response that caused the error, allowing for rapid debugging. This is essential for regulatory audit trails.
+
+Performance Metrics: We monitor the latency and token cost of the LLM agents in real-time. This proves our solution is efficient and scalable.
+
+4. Conclusion: Demonstration (Slides 8-9)
+The Reveal: Show the demo loop in action (Run 1 vs. Run 2).
+
+Final Takeaway: "We didn't just build a better rule checker. We built a Self-Adapting Data Quality Engine that uses AI to evolve its own rules, ensuring compliance and data trust remain high, even as the market changes."
+
+You should also check out this video, which provides a hands-on demonstration of LangSmith's capabilities for multi-agent systems, helping you visualize your presentation points.
+
+LangSmith: Observability for AI Agents demonstrates how LangSmith provides the necessary visibility for debugging and optimizing the complex, stateful interactions within your LangGraph multi-agent system.
+
+------------------- slide view
+
+Adaptive Data Quality System
+
+The Problem – The Static Wall
+- Traditional Data Quality Systems Are Broken
+- Reliance on static, hardcoded rules (e.g., "Income must be less than $1,000,000")
+- Systems are brittle and reactive, not proactive
+- Unable to detect new, emerging risks until damage occurs
+- Example: Sudden spike in non-US customer volume or subtle changes in loan amounts get unnoticed
+
+The Adaptive Solution — Introducing the AI Data Loop
+- The Adaptive Data Quality Loop
+- Multi-agent system built with LangGraph and Model Context Protocol (MCP)
+- Continuous monitoring and automatic rule correction
+- Self-evolving rules to catch emergent risks early
+
+Agent 1: The Profiling Agent (ML)
+- Agent 1: "I detect the signal"
+- Runs non-LLM tools like Isolation Forest and Pandas
+- Detects anomalies (e.g., $999,999 income spike) and data drift (unexpected country code changes)
+
+Agent 2, 3 & 4: Rule Generation, Validation, Refinement
+- Agents 2, 3 & 4: Writing, Enforcing, and Perfecting the Rules
+- Agent 2 (Rule Generation Agent – LLM): Proposes new rules based on profiling report (e.g., max income = $150,000)
+- Agent 3 (Validation Agent – Great Expectations): Applies new rules and flags failures on incoming data
+- Agent 4 (Refinement Agent – LLM): Learns from false positives and improves the rule generation prompts for next iteration
+
+The Model Context Protocol (MCP)
+- The Backbone That Enables Collaboration
+- Shared blueprint for reliable communication between agents
+- Ensures precise statistical reports for LLM agents
+- Dynamically updates prompts for continuous improvement
+
+LangSmith — The Reliability Backbone
+- Building Trust with Complete Observability
+- Full Agent Tracing to map entire LangGraph workflows per run
+- Debugging and Auditing support for regulatory compliance
+- Real-time monitoring of latency and token cost for scalability
+
+Demonstration — Adaptive Loop in Action (Run 1 vs. Run 2)
+- See It for Yourself
+- Run 1: Initial detection and rule failures
+- Run 2: Improved rules reduce false positives and catch anomalies effectively
+
+Final Takeaway
+- The Future of Data Quality is Self-Adapting
+- Not just a better rule checker — a Self-Adapting Data Quality Engine
+- AI-driven rule evolution ensures compliance and trust as market conditions shift
+- Enables proactive risk management for the banking/finance industry
+- Watch the LangSmith video for a live demo (include link/QR code)
