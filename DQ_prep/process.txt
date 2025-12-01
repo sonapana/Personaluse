@@ -1,0 +1,24 @@
+Agent,Core Function,Output to Next Agent
+Profiling Agent,Detects statistical drift and anomalies in the data batch.,"ProfilingReport (stats, drift scores, anomalies)"
+Rule Generation Agent,LLM reasons on the ProfilingReport and creates new validation rules.,ProposedRule (executable Great Expectations code)
+Validation Agent,Applies all rules to the data and logs failures.,"ValidationSummary (pass/fail count, failure logs)"
+Refinement Agent,LLM analyzes validation failures (false positives) and critiques the previous rule/prompt.,RefinementCritique (updated prompt for Rule Generation)
+
+This flow uses LangGraph's conditional edges to create the core Adaptive Loop.
+
+START: Data is ingested into the system.
+Profiling Agent: Processes the data and creates the ProfilingReport.
+Flows to the Rule Generation Agent.
+
+Rule Generation Agent: Receives the ProfilingReport and generates a ProposedRule.
+Flows to the Validation Agent.
+
+Validation Agent: Runs the data against the rules and produces the ValidationSummary.
+Conditional Check: Did the new AI-generated rule result in a high rate of unexpected failures (e.g., >10% false positives)?IF YES (Needs Refinement): 
+Flows to the Refinement Agent.IF NO (Successful/Acceptable): 
+Flows to END.
+
+Refinement Agent: Receives the ValidationSummary and produces a RefinementCritique (e.g., "Tell the LLM to make the next upper bound 5% wider").
+Loops back to the Rule Generation Agent (starting a new, improved cycle).
+
+END: The clean data is output, and the validated rules are promoted to the active rule set.
